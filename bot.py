@@ -11,7 +11,7 @@ connection = mysql.connector.connect(host=DB_HOST,
 
 cursor = connection.cursor(prepared=True)
 
-ses_client = boto3.client('ses', region_name="ca-central-1", aws_access_key=SES_PUB, aws_secret_access_key=SES_PRIV)
+ses_client = boto3.client('ses', region_name="ca-central-1", aws_access_key_id=SES_PUB, aws_secret_access_key=SES_PRIV)
 
 bot = commands.Bot()
 
