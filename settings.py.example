@@ -1,0 +1,11 @@
+TOKEN="1234"
+DB_HOST="127.0.0.1"
+DB_NAME="bitsocbot"
+DB_USER="bitsocbot"
+DB_PASS="bitsoc1234"
+SES_PUB=""
+SES_PRIV=""
+VERIFIED_ROLE=1
+INFO_CHANNEL=1
+HASH_PREFIX=""
+FROM="test@example.org"
