@@ -21,7 +21,6 @@ bot = commands.Bot()
 async def force_verify(i, member: Member, email: str):
     i.response.defer()
     role = i.guild.get_role(VERIFIED_ROLE)
-    member = i.user
     await member.add_roles(role, reason=email)
     query = """INSERT INTO users (discord_id, cmail) VALUES (%s,%s);"""
     data = (member.id, email)
