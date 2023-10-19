@@ -60,7 +60,8 @@ async def verify(i, cmail: str):
         await channel.send("Warning: User (" + i.user.mention + " - " + cmail + ") tried to join multiple times!")
         return
     m = hashlib.sha256()
-    m.update(HASH_PREFIX + cmail)
+    hstr = HASH_PREFIX + cmail
+    m.update(hstr.encode('utf-8'))
     h = m.hexdigest().substring(0, 8)
     message = "Your verification code is: " + h
     send_args = {
@@ -76,7 +77,8 @@ async def verify(i, cmail: str):
 @bot.slash_command(description="Verifies your account and gives you access to the server!")
 async def verify_complete(i, cmail: str, code: str):
     m = hashlib.sha256()
-    m.update(HASH_PREFIX + cmail)
+    hstr = HASH_PREFIX + cmail
+    m.update(hstr.encode('utf-8'))
     h = m.hexdigest().substring(0, 8)
     if h.lower() == code.lower():
         member = i.user
