@@ -1,4 +1,5 @@
 from nextcord.ext import commands
+from nextcord import Member
 import mysql.connector
 import hashlib
 import boto3
@@ -14,6 +15,27 @@ cursor = connection.cursor(prepared=True)
 ses_client = boto3.client('ses', region_name="ca-central-1", aws_access_key_id=SES_PUB, aws_secret_access_key=SES_PRIV)
 
 bot = commands.Bot()
+
+@bot.slash_command(description="Verifies all members!")
+@application_checks.has_permissions(manage_messages=True)
+async def verify_all(i):
+    i.response.defer()
+    role = i.guild.get_role(VERIFIED_ROLE)
+    async for member in i.guild.fetch_members(limit=None):
+        await member.add_roles(role)
+    await i.send("Verified all members!", ephemeral=True)
+
+@bot.slash_command(description="Gets a member's CMail")
+@application_checks.has_permissions(manage_messages=True)
+async def get_email(i, member: Member):
+    query = """SELECT cmail FROM users WHERE discord_id=%s;"""
+    data = (member.id,)
+    cursor.execute(query, data)
+    data = cursor.fetchone()
+    if data is None:
+        await i.send("No CMail address found!", ephemeral=True)
+    else:
+        await i.send("CMail: " + data, ephemeral=True)
 
 @bot.slash_command(description="Verifies your account and gives you access to the server!")
 async def verify(i, cmail: str):
