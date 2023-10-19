@@ -39,7 +39,7 @@ async def get_email(i, member: Member):
 
 @bot.slash_command(description="Verifies your account and gives you access to the server!")
 async def verify(i, cmail: str):
-    await i.response.defer()
+    await i.response.defer(ephemeral=True)
     if not cmail.endswith("@cmail.carleton.ca"):
         await i.send("Error: You must use a Carleton University email address!", ephemeral=True)
         return
@@ -75,8 +75,7 @@ async def verify(i, cmail: str):
                 'Subject': {'Data': "Discord Verification Code"},
                 'Body': {'Text': {'Data': message}, 'Html': {'Data': message}}}}
     ses_client.send_email(**send_args)
-    await i.send("A verification code has been sent to your email. It will be in your spam folder." +
-                 "Use `/verify_complete <cmail> <code>` to become verified!", ephemeral=True)
+    await i.send("A verification code has been sent to your email. It will be in your spam folder. Use `/verify_complete <cmail> <code>` to become verified!", ephemeral=True)
 
 @bot.slash_command(description="Verifies your account and gives you access to the server!")
 async def verify_complete(i, cmail: str, code: str):
