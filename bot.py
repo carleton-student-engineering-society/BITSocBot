@@ -16,16 +16,20 @@ ses_client = boto3.client('ses', region_name="ca-central-1", aws_access_key_id=S
 
 bot = commands.Bot()
 
-@bot.slash_command(description="Verifies all members!")
+@bot.slash_command(description="Force verify a user!")
 @application_checks.has_permissions(manage_messages=True)
-async def verify_all(i):
+async def force_verify(i, member: Member, email: str):
     i.response.defer()
     role = i.guild.get_role(VERIFIED_ROLE)
-    async for member in i.guild.fetch_members(limit=None):
-        await member.add_roles(role)
-    await i.send("Verified all members!", ephemeral=True)
+    member = i.user
+    await member.add_roles(role, reason=email)
+    query = """INSERT INTO users (discord_id, cmail) VALUES (%s,%s);"""
+    data = (member.id, email)
+    cursor.execute(query, data)
+    connection.commit()
+    await i.send("Force verified member!", ephemeral=True)
 
-@bot.slash_command(description="Gets a member's CMail")
+@bot.slash_command(description="Gets a member's cmail")
 @application_checks.has_permissions(manage_messages=True)
 async def get_email(i, member: Member):
     query = """SELECT cmail FROM users WHERE discord_id=%s;"""
@@ -33,9 +37,9 @@ async def get_email(i, member: Member):
     cursor.execute(query, data)
     data = cursor.fetchone()
     if data is None:
-        await i.send("No CMail address found!", ephemeral=True)
+        await i.send("No cmail address found!", ephemeral=True)
     else:
-        await i.send("CMail: " + data[0].decode(), ephemeral=True)
+        await i.send("cmail: " + data[0].decode(), ephemeral=True)
 
 @bot.slash_command(description="Verifies your account and gives you access to the server!")
 async def verify(i, cmail: str):
