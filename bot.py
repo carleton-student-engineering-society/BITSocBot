@@ -35,7 +35,7 @@ async def get_email(i, member: Member):
     if data is None:
         await i.send("No CMail address found!", ephemeral=True)
     else:
-        await i.send("CMail: " + data[0], ephemeral=True)
+        await i.send("CMail: " + data[0].decode(), ephemeral=True)
 
 @bot.slash_command(description="Verifies your account and gives you access to the server!")
 async def verify(i, cmail: str):
