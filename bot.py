@@ -62,7 +62,7 @@ async def verify(i, cmail: str):
     m = hashlib.sha256()
     hstr = HASH_PREFIX + cmail
     m.update(hstr.encode('utf-8'))
-    h = str(m.hexdigest()).substring(0, 8)
+    h = m.hexdigest()[0:8]
     message = "Your verification code is: " + h
     send_args = {
             'Source': FROM,
@@ -79,7 +79,7 @@ async def verify_complete(i, cmail: str, code: str):
     m = hashlib.sha256()
     hstr = HASH_PREFIX + cmail
     m.update(hstr.encode('utf-8'))
-    h = str(m.hexdigest()).substring(0, 8)
+    h = m.hexdigest()[0:8]
     if h.lower() == code.lower():
         member = i.user
         role = i.guild.get_role(VERIFIED_ROLE)
