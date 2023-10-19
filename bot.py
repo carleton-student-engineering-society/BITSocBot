@@ -1,4 +1,4 @@
-from nextcord.ext import commands
+from nextcord.ext import commands, application_checks
 from nextcord import Member
 import mysql.connector
 import hashlib
