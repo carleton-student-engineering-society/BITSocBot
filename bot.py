@@ -66,7 +66,11 @@ async def verify(i, cmail: str):
     message = "Your verification code is: " + h
     send_args = {
             'Source': FROM,
-            'Destination': cmail,
+            'Destination': {
+                'ToAddresses': [
+                    cmail,
+                ],
+            },
             'Message': {
                 'Subject': {'Data': "Discord Verification Code"},
                 'Body': {'Text': {'Data': message}, 'Html': {'Data': message}}}}
