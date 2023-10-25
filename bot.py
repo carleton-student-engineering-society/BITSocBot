@@ -4,6 +4,18 @@ import mysql.connector
 import hashlib
 import boto3
 from settings import *
+import sentry_sdk
+
+sentry_sdk.init(
+    dsn="https://88e20802832b5ef426b1bb1c03a407f0@o4506112163643392.ingest.sentry.io/4506112169345024",
+    # Set traces_sample_rate to 1.0 to capture 100%
+    # of transactions for performance monitoring.
+    traces_sample_rate=1.0,
+    # Set profiles_sample_rate to 1.0 to profile 100%
+    # of sampled transactions.
+    # We recommend adjusting this value in production.
+    profiles_sample_rate=1.0,
+)
 
 ses_client = boto3.client('ses', region_name="ca-central-1", aws_access_key_id=SES_PUB, aws_secret_access_key=SES_PRIV)
 
