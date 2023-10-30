@@ -24,7 +24,7 @@ bot = commands.Bot()
 @bot.slash_command(description="Force verify a user!")
 @application_checks.has_permissions(manage_messages=True)
 async def force_verify(i, member: Member, email: str):
-    i.response.defer(ephemeral=True)
+    await i.response.defer(ephemeral=True)
     connection = mysql.connector.connect(host=DB_HOST,
                                      database=DB_NAME,
                                      user=DB_USER,
@@ -44,7 +44,7 @@ async def force_verify(i, member: Member, email: str):
 @bot.slash_command(description="Gets a member's cmail")
 @application_checks.has_permissions(manage_messages=True)
 async def get_email(i, member: Member):
-    i.response.defer(ephemeral=True)
+    await i.response.defer(ephemeral=True)
     connection = mysql.connector.connect(host=DB_HOST,
                                      database=DB_NAME,
                                      user=DB_USER,
@@ -116,7 +116,7 @@ async def verify(i, cmail: str):
 
 @bot.slash_command(description="Verifies your account and gives you access to the server!")
 async def verify_complete(i, cmail: str, code: str):
-    i.response.defer(ephemeral=True)
+    await i.response.defer(ephemeral=True)
     connection = mysql.connector.connect(host=DB_HOST,
                                      database=DB_NAME,
                                      user=DB_USER,
