@@ -166,14 +166,14 @@ async def on_member_ban(guild, user):
 
     cursor = connection.cursor(prepared=True)
     channel = guild.get_channel(INFO_CHANNEL)
-    query = "SELECT stud_id FROM users WHERE discord_id=%s;"
+    query = "SELECT cmail FROM users WHERE discord_id=%s;"
     cursor.execute(query, (user.id,))
     u = cursor.fetchone()
     if u is None:
         await channel.send("Warning: User (" + user.mention + ") was banned but no matching student id was found!")
         return
     stud_id = u[0]
-    query = """INSERT INTO banned (stud_id) VALUES (%s);"""
+    query = """INSERT INTO banned (cmail) VALUES (%s);"""
     data = (stud_id,)
     cursor.execute(query, data)
     connection.commit()
@@ -190,14 +190,14 @@ async def on_member_unban(guild, user):
 
     cursor = connection.cursor(prepared=True)
     channel = guild.get_channel(INFO_CHANNEL)
-    query = "SELECT stud_id FROM users WHERE discord_id=%s;"
+    query = "SELECT cmail FROM users WHERE discord_id=%s;"
     cursor.execute(query, (user.id,))
     u = cursor.fetchone()
     if u is None:
         await channel.send("Warning: User (" + user.mention + ") was banned but no matching student id was found!")
         return
     stud_id = u[0]
-    query = """DELETE FROM banned WHERE stud_id=%s;"""
+    query = """DELETE FROM banned WHERE cmail=%s;"""
     data = (stud_id,)
     cursor.execute(query, data)
     connection.commit()
